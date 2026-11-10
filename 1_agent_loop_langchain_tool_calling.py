@@ -8,7 +8,7 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langsmith import traceable
 
 MAX_ITERATIONS = 10
-MODEL = "qwen3:1.7b"
+MODEL = "gpt-5"
 
 
 # --- Tools (LangChain @tool decorator) ---
@@ -35,12 +35,12 @@ def apply_discount(price: float, discount_tier: str) -> float:
 # --- Agent Loop ---
 
 
-@traceable(name="LangChain Agent Loop")
+@traceable(name="LangChain Agent Loop - Under the hood")
 def run_agent(question: str):
     tools = [get_product_price, apply_discount]
     tools_dict = {t.name: t for t in tools}
 
-    llm = init_chat_model(f"ollama:{MODEL}", temperature=0)
+    llm = init_chat_model(model=MODEL, temperature=0)
     llm_with_tools = llm.bind_tools(tools)
 
     print(f"Question: {question}")
